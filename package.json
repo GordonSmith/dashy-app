@@ -1,0 +1,67 @@
+{
+  "name": "dashy-app",
+  "version": "0.0.2",
+  "description": "A minimal Electron application",
+  "main": "lib-cjs/main.js",
+  "scripts": {
+    "clean": "rimraf lib* types dist",
+    "compile-cjs": "tsc",
+    "bundle-main": "webpack --config webpack.config.main.js",
+    "bundle-renderer": "webpack --config webpack.config.renderer.js",
+    "bundle": "run-p bundle-main bundle-renderer",
+    "package": "electron-builder -c.extraMetadata.main=lib/main.js",
+    "package-dev": "run-s package \"--dir\"",
+    "build": "run-s compile-cjs bundle package",
+    "bump-version": "standard-version",
+    "git-push": "git push --follow-tags origin master",
+    "publish": "run-s bunmp-version git-push",
+    "lint": "tslint --project . src/**/*.ts",
+    "start": "electron ."
+  },
+  "repository": "https://github.com/electron/dashy-app",
+  "keywords": [
+    "Electron",
+    "quick",
+    "start",
+    "tutorial",
+    "demo"
+  ],
+  "author": "GitHub",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@hpcc-js/common": "^2.4.0",
+    "@hpcc-js/comms": "^2.0.5",
+    "@hpcc-js/marshaller": "^2.3.0",
+    "@hpcc-js/other": "^2.3.0",
+    "@hpcc-js/util": "^2.1.2",
+    "electron-updater": "^3.1.6",
+    "electron-window-state": "^5.0.2",
+    "standard-version": "^4.4.0",
+    "tslib": "1.9.3"
+  },
+  "devDependencies": {
+    "@types/d3-selection": "1.3.1",
+    "@types/node": "10.12.0",
+    "electron": "^3.0.4",
+    "electron-builder": "^20.31.2",
+    "npm-run-all": "4.1.3",
+    "rimraf": "2.6.2",
+    "tslint": "^5.11.0",
+    "typescript": "3.1.3",
+    "webpack": "4.16.5",
+    "webpack-cli": "3.1.0"
+  },
+  "build": {
+    "appId": "com.hpcc-systems.dashy-app",
+    "files": [
+      "package.json",
+      "index.html",
+      "style/**/*",
+      "lib/**/*"
+    ],
+    "directories": {
+      "buildResources": "resources"
+    },
+    "publish": null
+  }
+}
