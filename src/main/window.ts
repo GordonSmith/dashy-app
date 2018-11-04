@@ -75,6 +75,25 @@ export class Window {
         this._browserWindow.show();
     }
 
+    openModalUrl(url: string) {
+        let modalWindow = new BrowserWindow({
+            parent: this._browserWindow,
+            width: 400,
+            height: 400,
+            useContentSize: true,
+            resizable: false,
+            modal: true
+        });
+
+        modalWindow.setMenu(null);
+
+        modalWindow.loadFile(url);
+
+        modalWindow.on("closed", function () {
+            modalWindow = null;
+        });
+    }
+
     setTitle(title) {
         this._browserWindow.setTitle(`Dashy App - ${title}`);
     }

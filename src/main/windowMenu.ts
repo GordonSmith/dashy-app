@@ -2,6 +2,7 @@ import { app, Menu, MenuItemConstructorOptions } from "electron";
 import * as fs from "fs";
 import * as path from "path";
 import { globalApp } from "../main";
+// import { checkForUpdates } from "./appUpdater";
 import { ensureDir, getPath, isFile, notOsx } from "./platform";
 import { Window } from "./window";
 
@@ -162,10 +163,34 @@ export class WindowMenu {
         };
     }
 
+    help(): MenuItemConstructorOptions {
+        const context = this;
+        return {
+            label: "Help",
+            submenu: [
+                {
+                    label: "Check for Updates...",
+                    enabled: false,
+                    click(item, focusedWindow) {
+                        // checkForUpdates(item);
+                    }
+                }, {
+                    type: "separator"
+                }, {
+                    label: "About",
+                    click(item, focusedWindow) {
+                        context._owner.openModalUrl("about.html");
+                    }
+                }
+            ]
+        };
+    }
+
     all(recentlyUsedFiles): MenuItemConstructorOptions[] {
         return [
             this.file(recentlyUsedFiles),
-            this.view()
+            this.view(),
+            this.help()
         ];
     }
 

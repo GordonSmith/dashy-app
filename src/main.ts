@@ -2,6 +2,8 @@ import { app } from "electron";
 import { autoUpdater } from "electron-updater";
 import { Window } from "./main/window";
 
+// global["__static"] = global["__static"] || ".";
+
 class App {
     private _windows: Window[] = [];
 

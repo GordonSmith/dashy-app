@@ -1,6 +1,6 @@
 {
   "name": "dashy-app",
-  "version": "0.0.2",
+  "version": "0.2.7",
   "description": "A minimal Electron application",
   "main": "lib-cjs/main.js",
   "scripts": {
@@ -10,15 +10,15 @@
     "bundle-renderer": "webpack --config webpack.config.renderer.js",
     "bundle": "run-p bundle-main bundle-renderer",
     "package": "electron-builder -c.extraMetadata.main=lib/main.js",
-    "package-dev": "run-s package \"--dir\"",
+    "package-dev": "npm run package -- --dir",
     "build": "run-s compile-cjs bundle package",
-    "bump-version": "standard-version",
+    "build-dev": "run-s compile-cjs bundle package-dev",
+    "standard-version": "standard-version",
     "git-push": "git push --follow-tags origin master",
-    "publish": "run-s bunmp-version git-push",
+    "publish": "run-s standard-version git-push",
     "lint": "tslint --project . src/**/*.ts",
     "start": "electron ."
   },
-  "repository": "https://github.com/electron/dashy-app",
   "keywords": [
     "Electron",
     "quick",
@@ -26,11 +26,13 @@
     "tutorial",
     "demo"
   ],
-  "author": "GitHub",
-  "license": "Apache-2.0",
   "dependencies": {
+    "@hpcc-js/codemirror": "^2.0.7",
     "@hpcc-js/common": "^2.4.0",
     "@hpcc-js/comms": "^2.0.5",
+    "@hpcc-js/dgrid": "^2.0.6",
+    "@hpcc-js/ddl-shim": "^2.1.2",
+    "@hpcc-js/graph": "^2.3.0",
     "@hpcc-js/marshaller": "^2.3.0",
     "@hpcc-js/other": "^2.3.0",
     "@hpcc-js/util": "^2.1.2",
@@ -54,14 +56,28 @@
   "build": {
     "appId": "com.hpcc-systems.dashy-app",
     "files": [
+      "!node_modules/**/*",
       "package.json",
       "index.html",
+      "about.html",
       "style/**/*",
+      "resources/icon.png",
       "lib/**/*"
     ],
     "directories": {
       "buildResources": "resources"
     },
     "publish": null
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GordonSmith/dashy-app.git"
+  },
+  "author": "Gordon Smith <gordonjsmith@gmail.com>",
+  "contributors": [],
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/GordonSmith/dashy-app/issues"
+  },
+  "homepage": "https://github.com/GordonSmith/dashy-app"
 }
