@@ -7,5 +7,5 @@ module.exports = {
         filename: 'main.js'
     },
     target: "electron-main",
-    mode: process.env.ENV || 'development',
+    mode: 'production'
 }

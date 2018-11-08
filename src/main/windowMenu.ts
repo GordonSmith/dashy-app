@@ -95,7 +95,7 @@ export class WindowMenu {
                 recentlyUsedMenu.submenu.push({
                     label: item,
                     click(menuItem, browserWindow) {
-                        context._owner.readFile(menuItem.label);
+                        context._owner.fileOpen(menuItem.label);
                     }
                 });
             }

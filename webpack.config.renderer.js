@@ -7,5 +7,5 @@ module.exports = {
         filename: 'renderer.js'
     },
     target: "electron-renderer",
-    mode: process.env.ENV || 'development',
+    mode: 'production'
 }

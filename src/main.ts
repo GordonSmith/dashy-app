@@ -1,8 +1,10 @@
 import { app } from "electron";
 import { autoUpdater } from "electron-updater";
+import * as path from "path";
 import { Window } from "./main/window";
 
 // global["__static"] = global["__static"] || ".";
+global["__appdir"] = path.join(__dirname, "..");
 
 class App {
     private _windows: Window[] = [];

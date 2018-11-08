@@ -10,7 +10,11 @@
 <body>
     <div id="placeholder"></div>
     <script>
-        require('./lib/renderer.js')
+        if (window.location.search === "?dev") {
+            require('./lib-cjs/renderer.js')
+        } else {
+            require('./lib/renderer.js')
+        }
     </script>
 </body>
 

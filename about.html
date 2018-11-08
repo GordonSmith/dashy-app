@@ -12,13 +12,41 @@
     <div class="logo">
         <img id="app-icon" alt="App icon" height="200" src="resources/icon.png">
     </div>
-    <h2 class="title">Dashy App</h2>
-    <h3 class="description"></h3>
-    <div class="copyright"></div>
-    <table class="versions"></table>
+    <h2 id="app-title" class="title">Dashy App</h2>
+    <h3 id="app-description" class="description"></h3>
+    <table class="versions">
+        <tbody>
+            <tr>
+                <td>Electron</td>
+                <td>
+                    <script>document.write(process.versions.electron)</script>
+                </td>
+            </tr>
+            <tr>
+                <td>Node.js</td>
+                <td>
+                    <script>document.write(process.versions.node)</script>
+                </td>
+            </tr>
+            <tr>
+                <td>Chromium</td>
+                <td>
+                    <script>document.write(process.versions.chrome)</script>
+                </td>
+            </tr>
+        </tbody>
+    </table>
     <footer class="footer">
-        <div class="link bug-report-link">https://github.com/GordonSmith/dashy-app</div>
+        <div id="app-homepage" class="link bug-report-link">https://github.com/GordonSmith/dashy-app</div>
     </footer>
+
+    <script>
+        if (window.location.search === "?dev") {
+            require('./lib-cjs/renderer.js')
+        } else {
+            require('./lib/renderer.js')
+        }
+    </script>
 </body>
 
 </html>

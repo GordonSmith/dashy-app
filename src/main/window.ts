@@ -1,4 +1,4 @@
-import { BrowserWindow, dialog, ipcMain } from "electron";
+import { app, BrowserWindow, dialog, ipcMain } from "electron";
 import * as windowStateKeeper from "electron-window-state";
 import * as fs from "fs";
 import * as fse from "fs-extra";
@@ -41,12 +41,8 @@ export class Window {
             height: mainWindowState.height,
             show: false
         });
-
-        if (__dirname.indexOf("lib-cjs") >= 0) {
-            this._browserWindow.loadFile("index-cjs.html");
-        } else {
-            this._browserWindow.loadFile("index.html");
-        }
+        const htmlPath = path.join(app.getAppPath(), "index.html");
+        this._browserWindow.loadURL(`file://${htmlPath}${__dirname.indexOf("lib-cjs") >= 0 ? "?dev" : ""}`);
 
         this._browserWindow.on("close", (e) => {
             if (!this._allowClose) {
@@ -61,8 +57,7 @@ export class Window {
 
         this._browserWindow.once("ready-to-show", () => {
             this.setTitle("Unknown");
-            this.send("DASHY:get-ddl").then(ddl => {
-                this._ddl = ddl;
+            this.clear().then(() => {
                 this._browserWindow.show();
                 mainWindowState.manage(this._browserWindow);
             });
@@ -87,7 +82,8 @@ export class Window {
 
         modalWindow.setMenu(null);
 
-        modalWindow.loadFile(url);
+        const htmlPath = path.join(app.getAppPath(), url);
+        modalWindow.loadURL(`file://${htmlPath}${__dirname.indexOf("lib-cjs") >= 0 ? "?dev" : ""}`);
 
         modalWindow.on("closed", function () {
             modalWindow = null;
@@ -119,16 +115,17 @@ export class Window {
         });
     }
 
-    readFile(filePath: string) {
+    readFile(filePath: string): Promise<void> {
         if (globalApp.exists(filePath)) {
             globalApp.activate(filePath);
+            return Promise.resolve();
         } else {
-            fse.readFile(path.resolve(filePath), "utf-8").then(ddl => {
+            return fse.readFile(path.resolve(filePath), "utf-8").then(ddl => {
+                this._menu.addRecentlyUsedDocument(filePath);
                 this.filePath(filePath);
                 this._ddl = ddl;
-                this.send("DASHY:set-ddl", ddl);
+                return this.send("DASHY:set-ddl", ddl);
             });
-            this._menu.addRecentlyUsedDocument(filePath);
         }
     }
 
@@ -152,63 +149,96 @@ export class Window {
         });
     }
 
-    fileClear() {
-        this.isDirty().then(dirty => {
-            if (dirty) {
-                dialog.showMessageBox(this._browserWindow, {
-                    type: "question",
-                    message: "Unsaved changes, continue with clear?",
-                    buttons: ["Yes", "No"]
-                }, async (response, checkboxChecked) => {
-                    if (response === 0) {
-                        await this.send("DASHY:clear");
-                        this.send("DASHY:get-ddl").then(ddl => {
-                            this._ddl = "";
-                        });
-                    }
-                });
-            } else {
-                this.send("DASHY:clear");
-                this._ddl = "";
+    clear(): Promise<void> {
+        return this.send("DASHY:clear").then(() => {
+            return this.send("DASHY:get-ddl").then(ddl => {
+                this._ddl = ddl;
+            });
+        });
+    }
+
+    fileClear(): Promise<void> {
+        return this.querySave().then(response => {
+            if (response) {
+                return this.clear();
             }
         });
     }
 
-    fileOpen() {
-        const filename = dialog.showOpenDialog(this._browserWindow, {
-            properties: ["openFile"],
+    fileOpen(filename?: string): Promise<void> {
+        return this.querySave().then(response => {
+            if (response) {
+                const filenames: string[] = filename !== undefined ? [filename] : dialog.showOpenDialog(this._browserWindow, {
+                    properties: ["openFile"],
+                    filters: [{
+                        name: "text",
+                        extensions: EXTENSIONS
+                    }]
+                });
+                if (filenames && filenames[0] && isFile(filenames[0])) {
+                    return this.readFile(path.normalize(filenames[0]));
+                }
+            }
+        });
+    }
+
+    fileSave(): Promise<void> {
+        if (this.filePath() === undefined) {
+            return this.fileSaveAs();
+        } else {
+            return this.writeFile(this.filePath());
+        }
+    }
+
+    fileSaveAs(): Promise<void> {
+        const filename = dialog.showSaveDialog(this._browserWindow, {
+            defaultPath: this.filePath(),
             filters: [{
                 name: "text",
                 extensions: EXTENSIONS
             }]
         });
-        if (filename && filename[0] && isFile(filename[0])) {
-            this.readFile(path.normalize(filename[0]));
+        if (filename) {
+            if (filename !== this.filePath() && isFile(filename)) {
+                const response = dialog.showMessageBox(this._browserWindow, {
+                    type: "question",
+                    message: `"${filename}" already exists.\nDo you want to replace it?`,
+                    buttons: ["Yes", "No"],
+                    defaultId: 1
+                });
+                if (response === 0) {
+                    return this.writeFile(filename);
+                }
+            }
         }
+        return Promise.resolve();
     }
 
-    fileSave() {
-        this.writeFile(this.filePath());
-    }
-
-    fileSaveAs() {
+    querySave(): Promise<boolean> {
+        return this.isDirty().then(dirty => {
+            if (dirty) {
+                const response = dialog.showMessageBox(this._browserWindow, {
+                    type: "question",
+                    message: `Do you want to save changes to "${this.filePath()}"?`,
+                    buttons: ["Save", "Don't Save", "Cancel"]
+                });
+                switch (response) {
+                    case 0:
+                        return this.fileSave().then(() => true);
+                    case 1:
+                        return true;
+                    case 2:
+                    default:
+                        return false;
+                }
+            }
+            return true;
+        });
     }
 
     onClose() {
-        this.isDirty().then(dirty => {
-            if (dirty) {
-                const context = this;
-                dialog.showMessageBox(this._browserWindow, {
-                    type: "question",
-                    message: "Unsaved changes, continue with close?",
-                    buttons: ["Yes", "No"]
-                }, (response, checkboxChecked) => {
-                    if (response === 0) {
-                        context._allowClose = true;
-                        context._browserWindow.close();
-                    }
-                });
-            } else {
+        this.querySave().then(response => {
+            if (response) {
                 this._allowClose = true;
                 this._browserWindow.close();
             }
