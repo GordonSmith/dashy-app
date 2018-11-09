@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.5.0"></a>
+# [0.5.0](https://github.com/GordonSmith/dashy-app/compare/v0.4.7...v0.5.0) (2018-11-09)
+
+
+### Features
+
+* **autoupdate:** Initial working implementation of Auto Update ([79c7a00](https://github.com/GordonSmith/dashy-app/commit/79c7a00))
+
+
+
 <a name="0.4.7"></a>
 ## [0.4.7](https://github.com/GordonSmith/dashy-app/compare/v0.4.6...v0.4.7) (2018-11-09)
 
