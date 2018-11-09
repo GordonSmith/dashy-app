@@ -11,7 +11,13 @@ import { dialog } from "electron";
 import { autoUpdater } from "electron-updater";
 
 let updater;
+
 autoUpdater.autoDownload = false;
+autoUpdater.setFeedURL({
+    provider: "github",
+    owner: "GordonSmith",
+    repo: "dashy-app"
+});
 
 autoUpdater.on("error", (error) => {
     dialog.showErrorBox("Error: ", error == null ? "unknown" : (error.stack || error).toString());
