@@ -78,9 +78,7 @@
     "directories": {
       "buildResources": "resources"
     },
-    "publish": [
-      "github"
-    ]
+    "publish": []
   },
   "repository": {
     "type": "git",
