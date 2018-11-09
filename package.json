@@ -1,6 +1,6 @@
 {
   "name": "dashy-app",
-  "version": "0.4.6",
+  "version": "0.4.2",
   "description": "Dashboard creation application",
   "main": "lib-cjs/main.js",
   "scripts": {
@@ -81,6 +81,9 @@
     "publish": {
       "provider": "generic",
       "url": "https://my.url"
+    },
+    "nsis": {
+      "artifactName": "${productName}-${version}.${ext}"
     }
   },
   "repository": {
