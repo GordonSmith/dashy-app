@@ -2,7 +2,7 @@ import { app, Menu, MenuItemConstructorOptions } from "electron";
 import * as fs from "fs";
 import * as path from "path";
 import { globalApp } from "../main";
-// import { checkForUpdates } from "./appUpdater";
+import { checkForUpdates } from "./appUpdater";
 import { ensureDir, getPath, isFile, notOsx } from "./platform";
 import { Window } from "./window";
 
@@ -170,9 +170,9 @@ export class WindowMenu {
             submenu: [
                 {
                     label: "Check for Updates...",
-                    enabled: false,
+                    enabled: true,
                     click(item, focusedWindow) {
-                        // checkForUpdates(item);
+                        checkForUpdates(item);
                     }
                 }, {
                     type: "separator"

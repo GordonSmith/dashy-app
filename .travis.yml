@@ -34,6 +34,7 @@ deploy:
   - "dist/dashy-app*.snap"
   - "dist/dashy-app*.AppImage"
   - "dist/dashy-app*.exe"
+  - "dist/latest*.yml"
   skip_cleanup: true
   on:
     repo: GordonSmith/dashy-app
