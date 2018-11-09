@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.4.1"></a>
+## [0.4.1](https://github.com/GordonSmith/dashy-app/compare/v0.4.0...v0.4.1) (2018-11-09)
+
+
+### Bug Fixes
+
+* **package:** Add missing resources ([1c886a5](https://github.com/GordonSmith/dashy-app/commit/1c886a5))
+
+
+
 <a name="0.4.0"></a>
 # [0.4.0](https://github.com/GordonSmith/dashy-app/compare/v0.3.1...v0.4.0) (2018-11-08)
 
