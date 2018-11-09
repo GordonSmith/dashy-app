@@ -1,6 +1,6 @@
 {
   "name": "dashy-app",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "Dashboard creation application",
   "main": "lib-cjs/main.js",
   "scripts": {
@@ -78,7 +78,7 @@
     "directories": {
       "buildResources": "resources"
     },
-    "publish": []
+    "publish": null
   },
   "repository": {
     "type": "git",
