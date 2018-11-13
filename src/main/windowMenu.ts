@@ -35,6 +35,56 @@ export class WindowMenu {
         }
     }
 
+    osx(): MenuItemConstructorOptions {
+        const context = this;
+        return {
+            label: "Dashy App",
+            submenu: [{
+                label: "About Dashy App",
+                click(menuItem, browserWindow) {
+                    context._owner.openModalUrl("about.html");
+                }
+            }, {
+                label: "Check for Updates...",
+                enabled: true,
+                click(item, focusedWindow) {
+                    checkForUpdates(item);
+                }
+            }, {
+                label: "Preferences",
+                accelerator: "Cmd+,",
+                visible: false,
+                click(menuItem, browserWindow) {
+                }
+            }, {
+                type: "separator"
+            }, {
+                label: "Services",
+                role: "services",
+                submenu: []
+            }, {
+                type: "separator"
+            }, {
+                label: "Hide Dashy App",
+                accelerator: "Command+H",
+                role: "hide"
+            }, {
+                label: "Hide Others",
+                accelerator: "Command+Alt+H",
+                role: "hideothers"
+            }, {
+                label: "Show All",
+                role: "unhide"
+            }, {
+                type: "separator"
+            }, {
+                label: "Quit Dashy App",
+                accelerator: "Command+Q",
+                click: app.quit
+            }]
+        };
+    }
+
     file(recentlyUsedFiles): MenuItemConstructorOptions {
         const context = this;
         const retVal: MenuItemConstructorOptions = {
@@ -80,7 +130,7 @@ export class WindowMenu {
                 }, {
                     label: "Exit",
                     click(menuItem, browserWindow) {
-                        browserWindow.close();
+                        browserWindow ? browserWindow.close() : app.quit();
                     }
                 }
             ]
@@ -188,6 +238,7 @@ export class WindowMenu {
 
     all(recentlyUsedFiles): MenuItemConstructorOptions[] {
         return [
+            // ...(process.platform === "darwin" ? [this.osx()] : []),
             this.file(recentlyUsedFiles),
             this.view(),
             this.help()
