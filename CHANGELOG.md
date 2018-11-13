@@ -2,16 +2,6 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-<a name="0.5.1"></a>
-## [0.5.1](https://github.com/GordonSmith/dashy-app/compare/v0.5.0...v0.5.1) (2018-11-13)
-
-
-### Bug Fixes
-
-* **osx:**  Better file/exit on OSX ([ced5b8d](https://github.com/GordonSmith/dashy-app/commit/ced5b8d))
-
-
-
 <a name="0.5.0"></a>
 # [0.5.0](https://github.com/GordonSmith/dashy-app/compare/v0.4.7...v0.5.0) (2018-11-09)
 
