@@ -30,6 +30,7 @@ deploy:
   file_glob: true
   file:
   - "dist/dashy-app*.dmg"
+  - "dist/dashy-app*.zip"
   - "dist/dashy-app*.deb"
   - "dist/dashy-app*.snap"
   - "dist/dashy-app*.AppImage"
