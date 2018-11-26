@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.6.1"></a>
+## [0.6.1](https://github.com/GordonSmith/dashy-app/compare/v0.6.0...v0.6.1) (2018-11-26)
+
+
+### Bug Fixes
+
+* File Save As (didn't) ([7b469c6](https://github.com/GordonSmith/dashy-app/commit/7b469c6))
+
+
+
 <a name="0.6.0"></a>
 # 0.6.0 (2018-11-13)
 
