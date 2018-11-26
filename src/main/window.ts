@@ -116,12 +116,12 @@ export class Window {
     }
 
     readFile(filePath: string): Promise<void> {
+        this._menu.addRecentlyUsedDocument(filePath);
         if (globalApp.exists(filePath)) {
             globalApp.activate(filePath);
             return Promise.resolve();
         } else {
             return fse.readFile(path.resolve(filePath), "utf-8").then(ddl => {
-                this._menu.addRecentlyUsedDocument(filePath);
                 this.filePath(filePath);
                 this._ddl = ddl;
                 return this.send("DASHY:set-ddl", ddl);
@@ -130,16 +130,16 @@ export class Window {
     }
 
     writeFile(filePath: string): Promise<void> {
+        this._menu.addRecentlyUsedDocument(filePath);
         return this.send("DASHY:get-ddl").then((ddl: string) => {
-            if (this.filePath() && ddl !== this._ddl) {
-                if (isFile(filePath)) {
-                    const pathObj = path.parse(filePath);
-                    pathObj.ext = ".bak";
-                    fse.moveSync(filePath, path.format(pathObj), { overwrite: true });
-                }
-                this._ddl = ddl;
-                return fse.outputFile(filePath, ddl, "utf-8");
+            if (isFile(filePath)) {
+                const pathObj = path.parse(filePath);
+                pathObj.ext = ".bak";
+                fse.moveSync(filePath, path.format(pathObj), { overwrite: true });
             }
+            this.filePath(filePath);
+            this._ddl = ddl;
+            return fse.outputFile(filePath, ddl, "utf-8");
         });
     }
 
@@ -199,16 +199,17 @@ export class Window {
             }]
         });
         if (filename) {
+            let doSave = true;
             if (filename !== this.filePath() && isFile(filename)) {
-                const response = dialog.showMessageBox(this._browserWindow, {
+                doSave = dialog.showMessageBox(this._browserWindow, {
                     type: "question",
                     message: `"${filename}" already exists.\nDo you want to replace it?`,
                     buttons: ["Yes", "No"],
                     defaultId: 1
-                });
-                if (response === 0) {
-                    return this.writeFile(filename);
-                }
+                }) === 0;
+            }
+            if (doSave) {
+                return this.writeFile(filename);
             }
         }
         return Promise.resolve();
