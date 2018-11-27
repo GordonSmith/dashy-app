@@ -27,15 +27,15 @@
     "demo"
   ],
   "dependencies": {
-    "@hpcc-js/common": "^2.6.0",
-    "@hpcc-js/comms": "^2.0.6",
-    "@hpcc-js/marshaller": "^2.5.0",
-    "@hpcc-js/other": "^2.4.0",
-    "@hpcc-js/util": "^2.1.2",
-    "electron-updater": "^3.2.3",
+    "@hpcc-js/common": "^2.6.1",
+    "@hpcc-js/comms": "^2.0.7",
+    "@hpcc-js/marshaller": "^2.5.1",
+    "@hpcc-js/other": "^2.4.1",
+    "@hpcc-js/util": "^2.1.3",
+    "electron-updater": "^4.0.4",
     "electron-window-state": "^5.0.3",
     "standard-version": "^4.4.0",
-    "tslib": "1.9.3"
+    "tslib": "^1.9.3"
   },
   "devDependencies": {
     "@types/d3-selection": "1.3.1",
