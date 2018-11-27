@@ -38,17 +38,17 @@
     "tslib": "^1.9.3"
   },
   "devDependencies": {
-    "@types/d3-selection": "1.3.1",
-    "@types/node": "10.12.0",
+    "@types/d3-selection": "^1.3.4",
+    "@types/node": "^10.12.10",
     "electron": "^3.0.10",
     "electron-builder": "^20.36.2",
-    "module-alias": "2.1.0",
-    "npm-run-all": "4.1.3",
-    "rimraf": "2.6.2",
+    "module-alias": "^2.1.0",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^2.6.2",
     "tslint": "^5.11.0",
-    "typescript": "3.1.3",
-    "webpack": "4.16.5",
-    "webpack-cli": "3.1.0"
+    "typescript": "^3.1.6",
+    "webpack": "^4.26.1",
+    "webpack-cli": "^3.1.2"
   },
   "build": {
     "appId": "com.hpcc-systems.dashy-app",
