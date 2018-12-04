@@ -112,6 +112,20 @@ export class WindowMenu {
                 }, {
                     type: "separator"
                 }, {
+                    label: "Import Data",
+                    click(menuItem, browserWindow) {
+                        context._owner.dataImport();
+                    }
+                }, {
+                    type: "separator"
+                }, {
+                    label: "Export JavaScript",
+                    click(menuItem, browserWindow) {
+                        // context._owner.fileOpen();
+                    }
+                }, {
+                    type: "separator"
+                }, {
                     id: "fileSave",
                     label: "Save",
                     accelerator: "CmdOrCtrl+S",

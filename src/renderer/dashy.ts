@@ -250,6 +250,10 @@ export function dashy() {
         return JSON.stringify(app._dashy.save());
     });
 
+    ipcRendererOn("DASHY:import-data", (name, data, ext) => {
+        app._dashy.addDatabomb(name, data, ext);
+    });
+
     function changed(ddlObj: object) {
         return ddl !== JSON.stringify(ddlObj);
     }

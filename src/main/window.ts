@@ -21,6 +21,12 @@ export const EXTENSIONS = [
     "json"
 ];
 
+export const EXTENSIONS_IMPORT = [
+    "csv",
+    "json",
+    "tsv"
+];
+
 export class Window {
 
     protected _browserWindow: BrowserWindow;
@@ -171,8 +177,11 @@ export class Window {
                 const filenames: string[] = filename !== undefined ? [filename] : dialog.showOpenDialog(this._browserWindow, {
                     properties: ["openFile"],
                     filters: [{
-                        name: "text",
+                        name: "DashyApp Files",
                         extensions: EXTENSIONS
+                    }, {
+                        name: "All Files",
+                        extensions: ["*"]
                     }]
                 });
                 if (filenames && filenames[0] && isFile(filenames[0])) {
@@ -180,6 +189,28 @@ export class Window {
                 }
             }
         });
+    }
+
+    dataImport() {
+        const filenames: string[] = dialog.showOpenDialog(this._browserWindow, {
+            properties: ["openFile", "multiSelections"],
+            filters: [{
+                name: "Data Files",
+                extensions: EXTENSIONS_IMPORT
+            }, {
+                name: "All Files",
+                extensions: ["*"]
+            }]
+        });
+        if (filenames && filenames.length) {
+            filenames.forEach(filePath => {
+                return fse.readFile(path.resolve(filePath), "utf-8").then(data => {
+                    const leafParts = path.basename(filePath).split(".");
+                    const ext = leafParts.pop();
+                    return this.send("DASHY:import-data", leafParts.join("."), data, ext);
+                });
+            });
+        }
     }
 
     fileSave(): Promise<void> {
