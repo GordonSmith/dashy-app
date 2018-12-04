@@ -1,6 +1,6 @@
 {
   "name": "dashy-app",
-  "version": "0.6.4",
+  "version": "0.7.0",
   "description": "Dashboard creation application",
   "main": "lib-cjs/main.js",
   "scripts": {

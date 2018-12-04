@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.7.0"></a>
+# [0.7.0](https://github.com/GordonSmith/dashy-app/compare/v0.6.4...v0.7.0) (2018-12-04)
+
+
+### Features
+
+* **data:**  Add import data option ([725b6fd](https://github.com/GordonSmith/dashy-app/commit/725b6fd))
+
+
+
 <a name="0.6.4"></a>
 ## [0.6.4](https://github.com/GordonSmith/dashy-app/compare/v0.6.3...v0.6.4) (2018-11-27)
 
