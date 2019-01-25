@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.7.3"></a>
+## [0.7.3](https://github.com/GordonSmith/dashy-app/compare/v0.7.2...v0.7.3) (2019-01-25)
+
+
+### Bug Fixes
+
+*  Add basic authentication support. ([f553fe4](https://github.com/GordonSmith/dashy-app/commit/f553fe4))
+
+
+
 <a name="0.7.2"></a>
 ## [0.7.2](https://github.com/GordonSmith/dashy-app/compare/v0.7.1...v0.7.2) (2019-01-24)
 
