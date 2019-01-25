@@ -1,5 +1,10 @@
 import { app } from "electron";
+import * as prompt from "electron-prompt";
 import { Window } from "./main/window";
+
+let authPromise;
+let userID = "";
+let userPW = "";
 
 class App {
     private _windows: Window[] = [];
@@ -19,6 +24,44 @@ class App {
             if (this._windows.length === 0) {
                 this.createWindow();
             }
+        });
+
+        app.on("login", (event, webContents, request, authInfo, callback) => {
+            event.preventDefault();
+            if (!authPromise) {
+                authPromise = new Promise((resolve, reject) => {
+                    prompt({
+                        title: "Authentication",
+                        label: "User ID:",
+                        value: userID,
+                        height: 160,
+                        inputAttrs: {
+                            type: "text"
+                        }
+                    }).then(r => {
+                        if (r === null) throw new Error("User Cancelled");
+                        userID = r;
+                    }).then(() => {
+                        return prompt({
+                            title: "Authentication",
+                            label: "Password:",
+                            value: userPW,
+                            height: 150,
+                            inputAttrs: {
+                                type: "password"
+                            }
+                        });
+                    }).then(r => {
+                        if (r === null) throw new Error("User Cancelled");
+                        userPW = r;
+                        resolve([userID, userPW]);
+                    });
+                });
+            }
+            authPromise.then(([userID2, userPW2]) => {
+                callback(userID, userPW);
+                authPromise = undefined;
+            }).catch(console.error);
         });
     }
 
@@ -54,3 +97,4 @@ class App {
 }
 
 export const globalApp = new App();
+
