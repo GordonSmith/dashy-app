@@ -1,6 +1,6 @@
 import { event as d3Event } from "@hpcc-js/common";
 import { Connection, Result } from "@hpcc-js/comms";
-import { Dashy, Databomb, Form, LogicalFile, RoxieResult, RoxieService, WU, WUResult } from "@hpcc-js/marshaller";
+import { Dashy, Databomb, Form, FormField, LogicalFile, RoxieResult, RoxieService, WU, WUResult } from "@hpcc-js/marshaller";
 import { Comms } from "@hpcc-js/other";
 import { exists, scopedLogger } from "@hpcc-js/util";
 import { ipcRenderer } from "electron";
@@ -55,31 +55,32 @@ class App {
                     this._dashy.importDDL(ddl, baseUrl, _url.param("Wuid"));
                 }
             });
-        } else {
+        } else if (false) {
             //  Lets add some demo datasoures
             const ec = this._dashy.elementContainer();
             const datasources = ec.datasources();
-            const publicRoxie = new RoxieService()
+            const publicRoxie = new RoxieService(ec)
                 .url("http://52.210.14.156:8002")
                 .querySet("roxie")
                 .queryID("peopleaccounts")
                 ;
 
-            const vmRoxie = new RoxieService()
+            const vmRoxie = new RoxieService(ec)
                 .url("http://192.168.3.22:8002")
                 .querySet("roxie")
                 .queryID("peopleaccounts")
                 ;
 
             for (const datasource of [
-                new WUResult()
-                    .wu(new WU()
-                        .url("http://52.210.14.156:8010")
-                        .wuid("W20180513-082149")
+                new WUResult(ec)
+                    .wu(
+                        new WU(ec)
+                            .url("http://52.210.14.156:8010")
+                            .wuid("W20180513-082149")
                     )
                     .resultName("Result 1")
                 ,
-                new LogicalFile()
+                new LogicalFile(ec)
                     .url("http://52.210.14.156:8010")
                     .logicalFile("progguide::exampledata::peopleaccts")
                 ,
@@ -90,25 +91,26 @@ class App {
                     .payload(JSON.stringify([]))
                 ,
                 new Form()
-                    .payload({
-                        id: 770,
-                        fname: "TIMTOHY",
-                        lname: "SALEEMI",
-                        minitial: "",
-                        gender: "M",
-                        street: "1734 NOSTRAND AVE # 3",
-                        city: "DRACUT",
-                        st: "MA",
-                        zip: "01826"
-                    }),
-                new WUResult()
-                    .wu(new WU()
-                        .url("http://192.168.3.22:8010")
-                        .wuid("W20171201-153452")
+                    .formFields([
+                        new FormField().type("number").fieldID("id").value(770),
+                        new FormField().fieldID("fname").value("TIMTOHY"),
+                        new FormField().fieldID("lname").value("SALEEMI"),
+                        new FormField().fieldID("minitial").value(""),
+                        new FormField().fieldID("gender").value("M"),
+                        new FormField().fieldID("street").value("1734 NOSTRAND AVE #3"),
+                        new FormField().fieldID("city").value("DRACUT"),
+                        new FormField().fieldID("st").value("MA"),
+                        new FormField().fieldID("zip").value("01826")
+                    ]),
+                new WUResult(ec)
+                    .wu(
+                        new WU(ec)
+                            .url("http://192.168.3.22:8010")
+                            .wuid("W20171201-153452")
                     )
                     .resultName("Result 1")
                 ,
-                new LogicalFile()
+                new LogicalFile(ec)
                     .url("http://192.168.3.22:8010")
                     .logicalFile("progguide::exampledata::peopleaccts")
                 ,

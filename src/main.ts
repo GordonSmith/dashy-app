@@ -58,7 +58,7 @@ class App {
                     });
                 });
             }
-            authPromise.then(([userID2, userPW2]) => {
+            authPromise.then(([userID, userPW]) => {
                 callback(userID, userPW);
                 authPromise = undefined;
             }).catch(console.error);
@@ -97,4 +97,3 @@ class App {
 }
 
 export const globalApp = new App();
-
