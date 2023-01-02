@@ -49,8 +49,8 @@
     "rimraf": "^2.7.1",
     "tslint": "^5.20.1",
     "typescript": "^3.7.4",
-    "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.10"
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
   },
   "build": {
     "appId": "com.hpcc-systems.dashy-app",
